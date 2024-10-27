@@ -1,0 +1,56 @@
+#jinja2: trim_blocks: True, lstrip_blocks: True
+# {{ ansible_managed }}
+# {{ template_fullpath }}
+
+name: {{ docker_project_slug }}
+
+services:
+
+  upsnap:
+    container_name: {{ docker_project_slug }}
+    image: ghcr.io/seriousm4x/upsnap:{{ upsnap_version }}
+    user: {{ ansible_user_uid }}:{{ ansible_user_gid }}
+    restart: always
+
+    network_mode: host
+
+    {{ docker_project_compose_service_additional_options | indent(4) }}
+
+    environment:
+      - TZ={{ timezone | default('UTC') }}
+      - UPSNAP_INTERVAL={{ upsnap_interval }}
+      - UPSNAP_SCAN_RANGE={{ upsnap_scan_range }}
+      - UPSNAP_WEBSITE_TITLE={{ upsnap_website_title }}
+
+    volumes:
+      - ./data:/app/pb_data
+
+    labels:
+      {{ traefik_project_base_labels | indent(6) }}
+
+      # API
+      traefik.http.routers.upsnap-api.service: upsnap
+      traefik.http.routers.upsnap-api.rule: {{ traefik_project_base_host_rules }} && PathPrefix(`/api/`)
+      traefik.http.routers.upsnap-api.entrypoints: https
+      traefik.http.routers.upsnap-api.middlewares: {{ upsnap_api_middlewares | default([], true) | join(', ') }}
+
+      # Risky API endpoints
+      traefik.http.routers.upsnap-api-restricted.service: upsnap
+      traefik.http.routers.upsnap-api-restricted.rule: {{ traefik_project_base_host_rules }} && (
+          PathPrefix(`/api/upsnap/shutdown/`) ||
+          PathPrefix(`/api/upsnap/scan`)
+        )
+      traefik.http.routers.upsnap-api-restricted.entrypoints: https
+      traefik.http.routers.upsnap-api-restricted.middlewares: {{ upsnap_risky_api_middlewares | default([], true) | join(', ') }}
+
+      # Admin
+      traefik.http.routers.upsnap-admin.service: upsnap
+      traefik.http.routers.upsnap-admin.rule: {{ traefik_project_base_host_rules }} && PathPrefix(`/_/`)
+      traefik.http.routers.upsnap-admin.entrypoints: https
+      traefik.http.routers.upsnap-admin.middlewares: {{ upsnap_admin_middlewares | default([], true) | join(', ') }}
+
+      # What's up Docker? - https://github.com/getwud/wud
+      wud.tag.include: ^\d+$$
+      wud.watch.digest: true
+
+{{ docker_project_compose_additional_options }}
