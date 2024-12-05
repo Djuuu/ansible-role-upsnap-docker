@@ -10,7 +10,7 @@ services:
     container_name: {{ docker_project_slug }}
     image: ghcr.io/seriousm4x/upsnap:{{ upsnap_version }}
     user: {{ ansible_user_uid }}:{{ ansible_user_gid }}
-    restart: always
+    restart: unless-stopped
 
     network_mode: host
 
