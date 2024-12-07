@@ -39,10 +39,8 @@ upsnap_project_name: upsnap
 
 upsnap_traefik_router_service: upsnap
 upsnap_traefik_loadbalancer_server_port: 8090
-upsnap_traefik_middlewares:
-  - "{{ docker_project_slug }}-cors@docker"
+upsnap_traefik_middlewares: []
 #  - "basic-auth@file"   # see djuuu.traefik_docker files/dynamic-conf/middlewares/basic-auth.yml
-#  - "allow-frames@file" # see djuuu.traefik_docker templates/dynamic-conf/middlewares/allow-frames.yml.j2
 
 
 # Upsnap project variables
@@ -51,12 +49,10 @@ upsnap_traefik_middlewares:
 upsnap_version: 4
 
 # API auth is managed by app, remove basic auth if present on app root
-upsnap_api_middlewares:
-  - "{{ docker_project_slug }}-cors@docker"
+upsnap_api_middlewares: []
 
 # Risky API endpoints: shutdown, scan
-upsnap_risky_api_middlewares:
-  - "{{ docker_project_slug }}-cors@docker"
+upsnap_risky_api_middlewares: []
 #  - "internal-access@file" # see djuuu.traefik_docker templates/dynamic-conf/middlewares/internal-access.yml.j2
 
 # Admin access
