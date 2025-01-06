@@ -35,7 +35,7 @@ Available role variables are listed below, along with default values (see `defau
 
 upsnap_project_name: upsnap
 
-# Docker project dynamic vars (uses `docker_project_name` prefix, adapt if overriden)
+# Docker project dynamic vars (uses `docker_project_name` prefix, adapt if overridden)
 
 upsnap_traefik_router_service: upsnap
 upsnap_traefik_loadbalancer_server_port: 8090
