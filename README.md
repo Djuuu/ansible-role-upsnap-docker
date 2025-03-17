@@ -59,12 +59,18 @@ upsnap_risky_api_middlewares: []
 upsnap_admin_middlewares:
 #  - "internal-access@file" # see djuuu.traefik_docker templates/dynamic-conf/middlewares/internal-access.yml.j2
 
-# Interval in which the devices are pinged
-upsnap_interval: "@every 10s"
-# Used for device discovery on local network
+# Interval in which the devices are pinged (UPSNAP_INTERVAL)
+upsnap_interval: "*/10 * * * * *"
+
+# Used for device discovery on local network (UPSNAP_SCAN_RANGE)
 upsnap_scan_range: "192.168.1.0/24"
+
 # Custom website title
 upsnap_website_title: "Upsnap WoL"
+
+# Useful when not running as root
+# https://github.com/seriousm4x/UpSnap/issues/207
+upsnap_ping_privileged: true
 ```
 
 Dependencies
