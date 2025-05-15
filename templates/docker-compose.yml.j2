@@ -7,14 +7,13 @@ name: {{ docker_project_slug }}
 services:
 
   upsnap:
-    container_name: {{ docker_project_slug }}
     image: ghcr.io/seriousm4x/upsnap:{{ upsnap_version }}
+    container_name: {{ docker_project_slug }}
+    restart: {{ docker_project_restart }}
     user: {{ ansible_user_uid }}:{{ ansible_user_gid }}
-    restart: unless-stopped
-
     network_mode: host
 
-    {{ docker_project_compose_service_additional_options | indent(4) }}
+    {{ docker_project_service_additional_options | indent(4) }}
 
     environment:
       - TZ={{ timezone | default('UTC') }}
