@@ -37,6 +37,6 @@ upsnap_scan_range: "192.168.1.0/24"
 # Custom website title
 upsnap_website_title: "Upsnap WoL"
 
-# Useful when not running as root
+# Can be useful when not running as root
 # https://github.com/seriousm4x/UpSnap/issues/207
-upsnap_ping_privileged: true
+upsnap_ping_privileged: false

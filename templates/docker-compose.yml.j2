@@ -19,7 +19,9 @@ services:
       - TZ={{ timezone | default('UTC') }}
       - UPSNAP_INTERVAL={{ upsnap_interval }}
       - UPSNAP_SCAN_RANGE={{ upsnap_scan_range }}
+      {% if upsnap_ping_privileged %}
       - UPSNAP_PING_PRIVILEGED={{ upsnap_ping_privileged }}
+      {% endif %}
       - UPSNAP_WEBSITE_TITLE={{ upsnap_website_title }}
 
     volumes:
