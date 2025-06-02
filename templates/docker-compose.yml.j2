@@ -49,8 +49,6 @@ services:
       traefik.http.routers.upsnap-admin.entrypoints: https
       traefik.http.routers.upsnap-admin.middlewares: {{ upsnap_admin_middlewares | default([], true) | join(', ') }}
 
-      # What's up Docker? - https://github.com/getwud/wud
-      wud.tag.include: ^\d+$$
-      wud.watch.digest: true
+      {{ docker_project_service_additional_labels | indent(6) }}
 
 {{ docker_project_compose_additional_options }}
